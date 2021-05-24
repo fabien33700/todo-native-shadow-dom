@@ -15,42 +15,47 @@ export default class TodoListElement extends HTMLElement {
       todosContainer: this.dom.querySelector('#todos-container'),
     }
 
-    this.todos = [
-      {
-        text: 'Tâche 1',
-        done: false,
-      },
-      {
-        text: 'Tâche 2',
-        done: true,
-      },
-    ]
+    this._todos = [];
+  }
+
+  static get observedAttributes() {
+    return ['todos'];
   }
 
   handleTodoToggle(e) {
-    const index = e.target.getAttribute('todo-id');
-    if (!this.todos[index]) return;
+    const index = e.target.dataset['todoId'];
+    if (!this._todos[index]) return;
 
-    this.todos[index].done = e.detail.done;
+    this._todos[index].done = e.detail.done;
   }
 
   renderTodo(todo, index) {
     const el = document.createElement('todo-item');
     el.done = todo.done;
     el.innerHTML = todo.text;
-    el.setAttribute('todo-id', index);
+    el.dataset['todoId'] = index;
     el.addEventListener('todo-toggle', this.handleTodoToggle.bind(this));
     return el;
   }
 
   render() {
-    this.todos
+    this.refs.todosContainer.innerHTML = '';
+    this._todos
       .map((todo, index) => this.renderTodo(todo, index))
       .forEach(el => this.refs.todosContainer.appendChild(el));
   }
 
   connectedCallback() {
     this.render();
+  }
+
+  set todos(newTodos) {
+    this._todos = newTodos;
+    this.render();
+  }
+
+  get todos() {
+    return this._todos;
   }
 }
 

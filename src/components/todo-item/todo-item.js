@@ -17,15 +17,26 @@ export class TodoItemElement extends HTMLElement {
     this.refs = {
       todoText: this.dom.querySelector('#todo-text'),
       todoCheck: this.dom.querySelector('#todo-check'),
+      deleteBtn: this.dom.querySelector('#delete-btn'),
     };
 
-    this.refs.todoCheck.addEventListener('change', this.handleCheck.bind(this))
+    this.handleCheck = this.handleCheck.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+  }
+
+  handleDelete() {
+    console.log('handleDelete', this.dataset['todoId']);
+    this.dispatchEvent(new CustomEvent('todo-deleted', {
+      detail: { todoId: this.dataset['todoId'] },
+      bubbles: true,
+      composed: true,
+    }));
   }
 
   handleCheck() {
     const { todoCheck } = this.refs;
     this.done = todoCheck.checked;
-    this.dispatchEvent(new CustomEvent('todo-toggle', { detail: { done: this.done }}));
+    this.dispatchEvent(new CustomEvent('todo-toggle', { detail: { done: this.done } }));
     this.render();
   }
 
@@ -42,6 +53,13 @@ export class TodoItemElement extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this.refs.todoCheck.addEventListener('change', this.handleCheck);
+    this.refs.deleteBtn.addEventListener('click', this.handleDelete);
+  }
+
+  disconnectedCallback() {
+    this.refs.todoCheck.removeEventListener('change', this.handleCheck);
+    this.refs.deleteBtn.removeEventListener('click', this.handleDelete);
   }
 
   attributeChangedCallback() {
