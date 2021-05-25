@@ -1,10 +1,50 @@
 <style>
+  :host {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 3px;
+  }
+
+  .text {
+    transition: 0.3s;
+  }
+
   .done {
     text-decoration: line-through;
+    font-style: italic;
+    color: #666;
+  }
+
+  .checkbox, .delete-button {
+    background: none;
+    border: none;
+    border-radius: 3px;
+    transition: 0.3s;
+    padding: 2px 6px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  .delete-button {
+    font-size: 12pt;
+  }
+  .checkbox:hover {
+    background-color: #eee;
+  }
+  .delete-button:hover {
+    background-color: #c0392b;
+    color: white;
+  }
+  .checkbox.checked {
+    background-color: #7dcea0;
+    color: white;
+  }
+  .checkbox.checked:hover {
+    background-color: #229954;
   }
 </style>
-<input type="checkbox" id="todo-check"/>
-<span id="todo-text">
+<div id="todo-check" class="checkbox">✓</div>
+
+<span id="todo-text" class="text">
   <slot></slot>
-  <button id="delete-btn">X</button>
+  <button id="delete-btn" class="delete-button">⨯</button>
 </span>

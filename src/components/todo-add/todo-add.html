@@ -1,11 +1,19 @@
 <style>
-  #add-input, #add-input:focus {
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    border-bottom: solid 1px black;
+  .add-todo {
+    border: none;
+    border-bottom: solid 1px #ccc;
     background: none;
+    outline: none;
+    margin-top: 5px;
+    padding-bottom: 5px;
+    transition: 0.3s;
+  }
+  .add-todo::placeholder {
+    font-style: italic;
+  }
+  .add-todo:hover {
+    border-bottom: solid 1px #5bc0de;
   }
 </style>
 <input type="checkbox" disabled />
-<input type="text" id="add-input" />
+<input type="text" placeholder="Add a new task" id="add-input" class="add-todo" />
